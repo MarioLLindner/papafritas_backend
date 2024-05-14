@@ -4,7 +4,6 @@ import { loginService } from 'src/services/login.service';
 
 @Controller('/auth')
 export class LoginController {
-
   constructor(private loginService: loginService) {}
 
   @Post('/login')
