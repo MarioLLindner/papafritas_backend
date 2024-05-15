@@ -7,6 +7,7 @@ class UserLoginDto{
   email: string;
   @IsOptional()
   password:string;
+  admin?:boolean;
 }
 
 export default UserLoginDto;

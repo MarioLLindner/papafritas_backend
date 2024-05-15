@@ -15,5 +15,4 @@ export class LoginController {
     return this.loginService.login(user);
   }
 
-
 }

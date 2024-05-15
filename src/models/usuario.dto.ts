@@ -6,12 +6,14 @@ class UsuarioDto {
   email: string;
   @IsOptional()
   password: string;
+  
   telefono: number;
   provincia: string;
   ciudad: string;
   codigoPostal: string;
   direccion: string;
-  activo?: number;
+  activo?: boolean;
+  admin?:boolean;
 }
 
 export default UsuarioDto;

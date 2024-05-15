@@ -20,15 +20,13 @@ export class loginService {
   }
 
   async validateUser(uEmail: string, uPassword: string): Promise<any> {
-    /*TRY */
     try {
       const userResult = await this.getUser(uEmail, uPassword)
-    
     if (userResult.email === uEmail && userResult.password === uPassword) {
-      /* if(uEmail === 'admin' && uPassword==='admin') */
       /*  const passEncriptado = await bcrypt.hash(uPassword, this.salt); */
       return {
         username: uEmail,
+        admin:userResult.admin
       };
       /*  if (this.joseHash == passEncriptado) {
          // retorno el objeto usuario
@@ -37,7 +35,7 @@ export class loginService {
     }
   } catch (error) {
     console.log(error);
-    throw new UnauthorizedException(`Invalid email or password whit`)
+    throw new UnauthorizedException(`Invalid email or password`)
   }
     return null;
   }
@@ -55,12 +53,13 @@ export class loginService {
       throw new NotFoundException(`Invalid email or password whit ${email} ${password}`)
     }
     const result = resultQuery[0];
-
+    /**/
+    console.log(result);
     return {
       email: result['email'],
-      password: result['password']
+      password: result['password'],
+      admin: result['admin']
     }
-
   }
 
 }
