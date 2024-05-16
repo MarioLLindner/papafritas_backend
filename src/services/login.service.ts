@@ -53,13 +53,13 @@ export class loginService {
       throw new NotFoundException(`Invalid email or password whit ${email} ${password}`)
     }
     const result = resultQuery[0];
-    /**/
-    console.log(result);
+    
+    console.log('Resultado en login.service.back',result);
     return {
       email: result['email'],
       password: result['password'],
       admin: result['admin']
     }
   }
-
+  
 }
