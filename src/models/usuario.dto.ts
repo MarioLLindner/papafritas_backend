@@ -1,13 +1,20 @@
-import { IsInt, IsOptional, IsString, isString } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 class UsuarioDto {
   userId?: number;
+  
   @IsOptional()
   email: string;
 
   @IsOptional()
+  nombre: string;
+
+  @IsOptional()
+  apellido: string;
+
+  @IsOptional()
   password: string;
-  
+
   @IsOptional()
   telefono: number;
 
@@ -19,12 +26,12 @@ class UsuarioDto {
 
   @IsOptional()
   codigoPostal: string;
-  
+
   @IsOptional()
   direccion: string;
 
   activo?: boolean;
-  admin?:boolean;
+  admin?: boolean;
 }
 
 export default UsuarioDto;

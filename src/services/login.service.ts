@@ -22,21 +22,24 @@ export class loginService {
   async validateUser(uEmail: string, uPassword: string): Promise<any> {
     try {
       const userResult = await this.getUser(uEmail, uPassword)
-    if (userResult.email === uEmail && userResult.password === uPassword) {
-      /*  const passEncriptado = await bcrypt.hash(uPassword, this.salt); */
-      return {
-        username: uEmail,
-        admin:userResult.admin
-      };
-      /*  if (this.joseHash == passEncriptado) {
-         // retorno el objeto usuario
-       } */
-      return null;
+      if (userResult.email === uEmail && userResult.password === uPassword) {
+        /*  const passEncriptado = await bcrypt.hash(uPassword, this.salt); */
+        return {
+          /*informacion que manda el token al front */
+          userId:userResult.userId,
+          /* username: userResult.email, */
+          nombre: userResult.nombre,
+          admin: userResult.admin
+        };
+        /*  if (this.joseHash == passEncriptado) {
+           // retorno el objeto usuario
+         } */
+        return null;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new UnauthorizedException(`Invalid email or password`)
     }
-  } catch (error) {
-    console.log(error);
-    throw new UnauthorizedException(`Invalid email or password`)
-  }
     return null;
   }
 
@@ -45,7 +48,7 @@ export class loginService {
     return {
       accessToken: this.jwtService.sign(payload),
     };
-  } 
+  }
 
   async getUser(email: string, password: string): Promise<UserLoginDto> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(usuariosQueries.selectByEmailAndPass, [email, password]);
@@ -53,13 +56,15 @@ export class loginService {
       throw new NotFoundException(`Invalid email or password whit ${email} ${password}`)
     }
     const result = resultQuery[0];
-    
-    console.log('Resultado en login.service.back',result);
-    return {
+
+    console.log('Resultado en login.service.back linea 60', result);
+    return { 
+      userId:result['userId'],
       email: result['email'],
+      nombre:result['nombre'],
       password: result['password'],
       admin: result['admin']
     }
   }
-  
+
 }

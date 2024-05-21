@@ -1,12 +1,11 @@
-/* import { IsInt, IsOptional, IsString } from 'class-validator'; */
-
 import { IsOptional } from "class-validator";
-
 class UserLoginDto{
+  userId:number;
   @IsOptional()
   email: string;
   @IsOptional()
   password:string;
+  nombre?:string;
   admin?:boolean;
 }
 

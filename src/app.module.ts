@@ -14,7 +14,7 @@ import { UsuarioService } from './services/usuario.service';
   imports: [
     JwtModule.register({
     secret:
-      'clave secreta',
+    'qwerqwertyuiopásdfghjklñzxcv+-321qwertyuiopásdfghjklñzxcv+-32189qwertyuiopásdfghjklñzxcv+-32189786*786*89786*tyuiopásdfghjklñzxcv+-32189786*bnm,',
     signOptions: { expiresIn: '1h' },
   }),],
   controllers: [AppController,LoginController,ProductosControler,usuarioControler],

@@ -11,10 +11,12 @@ export class UsuarioService {
 
   async registrarUsuario(user: UsuarioDto): Promise<UsuarioDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(usuariosQueries.registrar,
-      [user.email, user.password, user.telefono, user.provincia, user.ciudad, user.codigoPostal, user.direccion, user.activo]);
+      [user.email, user.password, user.nombre, user.apellido, user.telefono, user.provincia, user.ciudad, user.codigoPostal, user.direccion, user.activo]);
     return {
       email: user.email,
       password: user.password,
+      nombre: user.nombre,
+      apellido: user.apellido,
       telefono: user.telefono,
       provincia: user.provincia,
       ciudad: user.ciudad,
@@ -30,6 +32,8 @@ export class UsuarioService {
       return {
         userId: rs['userId'],
         email: rs['email'],
+        nombre: rs['nombre'],
+        apellido: rs['apellido'],
         password: rs['password'],
         telefono: rs['telefono'],
         provincia: rs['provincia'],
