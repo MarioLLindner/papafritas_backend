@@ -3,18 +3,20 @@ import { DatabaseService } from './db.service';
 import UsuarioDto from 'src/models/usuario.dto';
 import { ResultSetHeader, RowDataPacket } from 'mysql2';
 import usuariosQueries from './queries/usuarios.queries';
-
+import { generateHash } from './hashingService';
 
 @Injectable()
 export class UsuarioService {
   constructor(private dbService: DatabaseService) { }
 
   async registrarUsuario(user: UsuarioDto): Promise<UsuarioDto> {
+    //encriptar password
+    const passHashFromRequest = await generateHash(user.password);
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(usuariosQueries.registrar,
-      [user.email, user.password, user.nombre, user.apellido, user.telefono, user.provincia, user.ciudad, user.codigoPostal, user.direccion, user.activo]);
+      [user.email, passHashFromRequest, user.nombre, user.apellido, user.telefono, user.provincia, user.ciudad, user.codigoPostal, user.direccion, user.activo]);
     return {
       email: user.email,
-      password: user.password,
+      password: passHashFromRequest,
       nombre: user.nombre,
       apellido: user.apellido,
       telefono: user.telefono,
@@ -43,7 +45,7 @@ export class UsuarioService {
         activo: rs['activo']
       }
     }
-  )
-  return resultUsers;
+    )
+    return resultUsers;
   }
 }

@@ -1,47 +1,37 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { RowDataPacket } from "mysql2";
 import { DatabaseService } from './db.service';
 import usuariosQueries from './queries/usuarios.queries';
 import UserLoginDto from 'src/models/userLogin.dto';
-
+import { generateHash } from './hashingService';
 
 @Injectable()
 export class loginService {
-  salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO';
-  joseHash: string;
   constructor(private jwtService: JwtService, private dbService: DatabaseService) {
-    this.genSalt();
-  }
-
-  async genSalt() {
-    this.joseHash = await bcrypt.hash('jose', this.salt);
   }
 
   async validateUser(uEmail: string, uPassword: string): Promise<any> {
     try {
-      const userResult = await this.getUser(uEmail, uPassword)
-      if (userResult.email === uEmail && userResult.password === uPassword) {
-        /*  const passEncriptado = await bcrypt.hash(uPassword, this.salt); */
-        return {
-          /*informacion que manda el token al front */
-          userId:userResult.userId,
-          /* username: userResult.email, */
-          nombre: userResult.nombre,
-          admin: userResult.admin
-        };
-        /*  if (this.joseHash == passEncriptado) {
-           // retorno el objeto usuario
-         } */
-        return null;
-      }
+      const passHashFromRequest = await generateHash(uPassword);
+      const userResult = await this.getUser(uEmail, passHashFromRequest);
+        /* console.log('passHashFromRequest', passHashFromRequest) */
+        if (userResult.email === uEmail && userResult.password === passHashFromRequest) {
+            return {
+                /*informacion que manda el token al front */
+                userId: userResult.userId,
+                nombre: userResult.nombre,
+                admin: userResult.admin
+            };
+        }
     } catch (error) {
-      console.log(error);
-      throw new UnauthorizedException(`Invalid email or password`)
+        console.log(error);
+        throw new HttpException('Acceso denegado', HttpStatus.UNAUTHORIZED);;
     }
+
     return null;
-  }
+}
 
   login(user: any) {
     const payload = { usuario: user };
@@ -53,11 +43,11 @@ export class loginService {
   async getUser(email: string, password: string): Promise<UserLoginDto> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(usuariosQueries.selectByEmailAndPass, [email, password]);
     if (resultQuery.length === 0) {
-      throw new NotFoundException(`Invalid email or password whit ${email} ${password}`)
+      throw new HttpException('Acceso denegado', HttpStatus.UNAUTHORIZED);
     }
     const result = resultQuery[0];
 
-    console.log('Resultado en login.service.back linea 60', result);
+    console.log('Resultado en login.service.back linea 50', result);
     return { 
       userId:result['userId'],
       email: result['email'],
