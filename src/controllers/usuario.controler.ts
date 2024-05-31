@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards } from "@nestjs/common";
 import { UsuarioService } from "src/services/usuario.service";
 import UsuarioDto from "src/models/usuario.dto";
+import { JwtMiddlewareGuard } from 'src/services/Jwtguard.service';
 
 
-@Controller('/register')
+@Controller('/user')
 export class usuarioControler {
   constructor(private readonly usuarioService: UsuarioService) { }
 
@@ -13,9 +14,12 @@ export class usuarioControler {
   }
 
   @Get()
+  @UseGuards(JwtMiddlewareGuard)
   async GetAllUsers(): Promise<UsuarioDto[]> {
     return this.usuarioService.getAllUsers();
   }
+
+  /*agregar guards al manejo de usuarios */
 
 }
 
