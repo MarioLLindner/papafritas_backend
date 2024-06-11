@@ -1,9 +1,9 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Delete } from "@nestjs/common";
 import { UsuarioService } from "src/services/usuario.service";
 import UsuarioDto from "src/models/usuario.dto";
 
 
-@Controller('/register')
+@Controller('/user')
 export class usuarioControler {
   constructor(private readonly usuarioService: UsuarioService) { }
 
@@ -17,6 +17,13 @@ export class usuarioControler {
     return this.usuarioService.getAllUsers();
   }
 
+  @Put()
+  async actualizarUsuario(@Body() body:UsuarioDto):Promise<UsuarioDto>{
+    return await this.usuarioService.userUpdate(body);
+  }
+
+  @Delete()
+  async eliminarProducto(@Body() body:{userId:number}):Promise<void | string>{
+    return await this.usuarioService.eliminarUsuario(body.userId);
+  }
 }
-
-

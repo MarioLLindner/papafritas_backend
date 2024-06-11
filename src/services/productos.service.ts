@@ -54,14 +54,17 @@ export class productosServices {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delete, [productoId]);
       if (resultQuery.affectedRows == 0) {
         throw new HttpException("No se pudo eliminar el producto por que no existe dicho Id", HttpStatus.NOT_FOUND)
-      } else { return ('Producto eliminada con exito'); }
+      } else { return ('Producto eliminado con exito'); }
     } catch (error) {
+      console.log(error)
       if (error.errnumero == 1451) {
         // Error 409 conflicto entre lo que se quiere eliminar y lo que hay en la base de datos
         throw new HttpException('No se pudo eliminar el producto ya que esta referenciado por otro registro', HttpStatus.CONFLICT);
       }
       throw new HttpException(`Error eliminando el producto: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    } 
 
   };
+
+
 }

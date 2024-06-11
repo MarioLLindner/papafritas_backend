@@ -22,16 +22,15 @@ export class ProductosControler{
     return await this.productosService.crearProducto(body);
   };
 
-  @Put('/:productoId')
-  async actualizarProducto(@Body() body:ProductoDto, @Param('productoId') productoId:number):Promise<ProductoDto>{
-    return await this.productosService.actualizarProducto(productoId,body);
+  @Put()
+  async actualizarProducto(@Body() body:ProductoDto):Promise<ProductoDto>{
+    return await this.productosService.actualizarProducto(body.productoId,body);
   }
 
-  @Delete('/:productoId')
-  async eliminarProducto(@Param('productoId') productoId:number):Promise<void | string>{
-    return await this.productosService.eliminarProducto(productoId);
+  @Delete()
+  async eliminarProducto(@Body() body:{productoId:number}):Promise<void | string>{
+    return await this.productosService.eliminarProducto(body.productoId);
   }
-
 
 
 
