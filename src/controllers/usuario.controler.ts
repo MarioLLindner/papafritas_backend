@@ -23,7 +23,7 @@ export class usuarioControler {
   }
 
   @Delete()
-  async eliminarProducto(@Body() body:{userId:number}):Promise<void | string>{
+  async eliminarUsuario(@Body() body:{userId:number}):Promise<void | string>{
     return await this.usuarioService.eliminarUsuario(body.userId);
   }
 }

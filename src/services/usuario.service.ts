@@ -59,9 +59,9 @@ export class UsuarioService {
     throw new HttpException("No se pudo actualizar el usuario ya que no se encontro el Id", HttpStatus.NOT_FOUND)
   };
 
-  async eliminarUsuario(productoId: number): Promise<void | string> {
+  async eliminarUsuario(usuarioid: number): Promise<void | string> {
     try {
-      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(usuariosQueries.delete, [productoId]);
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(usuariosQueries.delete, [usuarioid]);
       if (resultQuery.affectedRows == 0) {
         throw new HttpException("No se pudo eliminar el usuario por que no existe dicho Id", HttpStatus.NOT_FOUND)
       } else { return ('Usuario eliminado con exito'); }
