@@ -22,6 +22,7 @@ export class productosServices {
         precioOferta: rs['precioOferta'],
       }
     });
+    console.log('productos.service.backend',resultProducto);
     return resultProducto;
   }
 
@@ -50,13 +51,14 @@ export class productosServices {
 
     /* ELIMINADO ES CASCADA, CUANDO UN USUARIO LO TIENE EN CARRITO DE COMPRAS */
   async eliminarProducto(productoId: number): Promise<void | string> {
+    console.log('producto id :',productoId)
     try {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delete, [productoId]);
       if (resultQuery.affectedRows == 0) {
         throw new HttpException("No se pudo eliminar el producto por que no existe dicho Id", HttpStatus.NOT_FOUND)
       } else { return ('Producto eliminado con exito'); }
     } catch (error) {
-      console.log(error)
+      /* console.log(error) */
       if (error.errnumero == 1451) {
         // Error 409 conflicto entre lo que se quiere eliminar y lo que hay en la base de datos
         throw new HttpException('No se pudo eliminar el producto ya que esta referenciado por otro registro', HttpStatus.CONFLICT);
