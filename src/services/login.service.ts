@@ -47,7 +47,7 @@ export class loginService {
     }
     const result = resultQuery[0];
 
-    /* console.log('Resultado en login.service.back linea 50', result); */
+    console.log('Resultado en login.service.back linea 50', result);
     return { 
       userId:result['userId'],
       email: result['email'],

@@ -22,14 +22,31 @@ export class productosServices {
         precioOferta: rs['precioOferta'],
       }
     });
-    /* console.log('productos.service.backend',resultProducto); */
+    console.log("RESPUESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    return resultProducto;
+  }
+
+  async getRandomProductos():Promise<ProductoDto[]>{
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOfert, []);
+    const resultProducto = resultQuery.map((rs: RowDataPacket) => {
+      return {
+        productoId: rs['productoId'],
+        nombre: rs['nombre'],
+        descripcion: rs['descripcion'],
+        imagenLink: rs['imagenLink'],
+        detalles: rs['detalles'],
+        precio: rs['precio'],
+        precioOferta: rs['precioOferta'],
+      }
+    });
+    console.log("RESPUESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return resultProducto;
   }
 
   async crearProducto(producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta]);
-      return {
+    return {
       nombre: producto.nombre,
       descripcion: producto.descripcion,
       imagenLink: producto.imagenLink,
@@ -51,14 +68,13 @@ export class productosServices {
 
     /* ELIMINADO ES CASCADA, CUANDO UN USUARIO LO TIENE EN CARRITO DE COMPRAS */
   async eliminarProducto(productoId: number): Promise<void | string> {
-    console.log('producto id :',productoId)
     try {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delete, [productoId]);
       if (resultQuery.affectedRows == 0) {
         throw new HttpException("No se pudo eliminar el producto por que no existe dicho Id", HttpStatus.NOT_FOUND)
       } else { return ('Producto eliminado con exito'); }
     } catch (error) {
-      /* console.log(error) */
+      console.log(error)
       if (error.errnumero == 1451) {
         // Error 409 conflicto entre lo que se quiere eliminar y lo que hay en la base de datos
         throw new HttpException('No se pudo eliminar el producto ya que esta referenciado por otro registro', HttpStatus.CONFLICT);

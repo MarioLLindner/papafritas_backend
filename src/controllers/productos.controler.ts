@@ -16,6 +16,11 @@ export class ProductosControler{
     return await this.productosService.getAllProductos();
   }
 
+  @Get('random')
+  async getRandomProductos(){
+    return this.productosService.getRandomProductos();
+  }
+
 
   @Post()
   async crearProducto(@Body() body: ProductoDto): Promise<ProductoDto> {

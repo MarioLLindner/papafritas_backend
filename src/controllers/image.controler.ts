@@ -23,8 +23,8 @@ export class ImagesController {
           fileType: /(jpg|jpeg|png|gif)$/,
         })
         .addMaxSizeValidator({
-          maxSize: 10024000,
-          message: 'La imagen no puede superar el 10 MB',
+          maxSize: 1024000,
+          message: 'La imagen no puede superar el 1 MB',
         })
         .build({ errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY }),
     )
