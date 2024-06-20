@@ -22,14 +22,14 @@ export class productosServices {
         precioOferta: rs['precioOferta'],
       }
     });
-    console.log('productos.service.backend',resultProducto);
+    /* console.log('productos.service.backend',resultProducto); */
     return resultProducto;
   }
 
   async crearProducto(producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta]);
-    return {
+      return {
       nombre: producto.nombre,
       descripcion: producto.descripcion,
       imagenLink: producto.imagenLink,
