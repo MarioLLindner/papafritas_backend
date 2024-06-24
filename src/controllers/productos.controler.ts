@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards,
+  Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards,Query
 } from '@nestjs/common';
 import ProductoDto from 'src/models/producto.dto';
 import { productosServices } from 'src/services/productos.service';
@@ -37,9 +37,15 @@ export class ProductosControler{
     return await this.productosService.eliminarProducto(body.productoId);
   }
 
+  @Post('carrito')
+  async addToCart(@Body() body: {productoId:number,userId:number}):Promise<void | string>{
+    return await this.productosService.addToCart(body.productoId,body.userId);
+  };
 
-
-
+  @Get('carrito')
+  async getForCart(@Query('userId')userId: number): Promise<ProductoDto[]>{
+    return await this.productosService.getForCart(userId);
+  }
 }
 
 

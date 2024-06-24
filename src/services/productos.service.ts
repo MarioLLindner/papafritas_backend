@@ -19,14 +19,13 @@ export class productosServices {
         imagenLink: rs['imagenLink'],
         detalles: rs['detalles'],
         precio: rs['precio'],
-        precioOferta: rs['precioOferta'],
+        precioOferta: rs['preciooferta'],
       }
     });
-    console.log("RESPUESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return resultProducto;
   }
 
-  async getRandomProductos():Promise<ProductoDto[]>{
+  async getRandomProductos(): Promise<ProductoDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOfert, []);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
       return {
@@ -39,7 +38,6 @@ export class productosServices {
         precioOferta: rs['precioOferta'],
       }
     });
-    console.log("RESPUESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     return resultProducto;
   }
 
@@ -60,13 +58,14 @@ export class productosServices {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.update,
       [producto.nombre, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, productoID]);
     if (resultQuery.affectedRows == 1) {
+      /* console.log('producto modificado product service back, L62',producto); */
       return producto;
     }
     throw new HttpException("No se pudo actualizar el producto ya que no se encontro el Id", HttpStatus.NOT_FOUND)
   };
 
 
-    /* ELIMINADO ES CASCADA, CUANDO UN USUARIO LO TIENE EN CARRITO DE COMPRAS */
+  /* ELIMINADO ES CASCADA, CUANDO UN USUARIO LO TIENE EN CARRITO DE COMPRAS */
   async eliminarProducto(productoId: number): Promise<void | string> {
     try {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delete, [productoId]);
@@ -80,9 +79,37 @@ export class productosServices {
         throw new HttpException('No se pudo eliminar el producto ya que esta referenciado por otro registro', HttpStatus.CONFLICT);
       }
       throw new HttpException(`Error eliminando el producto: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
-    } 
-
+    }
   };
+
+  async addToCart(productoId: number, userId: number): Promise<void | string> {
+    try {
+      console.log('producto | user ID');
+      console.log(productoId + '|' + userId);
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.addToCart, [productoId, userId])
+      console.log(resultQuery)
+    } catch (error) {
+      throw new HttpException(`error añadiendo producto al carrito' ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async getForCart(userId: number): Promise<ProductoDto[]> {
+    console.log(userId)
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
+    const resultProducto = resultQuery.map((rs: RowDataPacket) => {
+      return {
+        productoId: rs['productoId'],
+        nombre: rs['nombre'],
+        descripcion: rs['descripcion'],
+        imagenLink: rs['imagenLink'],
+        detalles: rs['detalles'],
+        precio: rs['precio'],
+        precioOferta: rs['preciooferta'],
+      }
+    });
+    console.log('result PRODUCTO SERVICEEEEEEE BACK',resultProducto)
+    return resultProducto;
+  }
 
 
 }

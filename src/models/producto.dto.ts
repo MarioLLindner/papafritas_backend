@@ -22,7 +22,7 @@ class ProductoDto {
 
   @IsInt()
   @IsOptional()
-  precioOferta: number;
+  precioOferta?: number;
 }
 
 export default ProductoDto;
