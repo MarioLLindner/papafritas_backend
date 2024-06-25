@@ -16,7 +16,7 @@ export class ProductosControler{
     return await this.productosService.getAllProductos();
   }
   
-  @Get(':productoId')
+  @Get('producto/:productoId')
   async getProducto(@Param('productoId') productoId: number){
     return await this.productosService.getProducto(productoId);
   }

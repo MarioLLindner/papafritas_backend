@@ -31,7 +31,6 @@ export class productosServices {
     if (resultQuery.length === 0) {
       return null;
     }
-    
     const rs: RowDataPacket = resultQuery[0];
     const producto: ProductoDto = {
       productoId: rs['productoId'],
