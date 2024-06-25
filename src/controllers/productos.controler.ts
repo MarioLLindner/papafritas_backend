@@ -15,6 +15,12 @@ export class ProductosControler{
   async getProductos(): Promise<ProductoDto[]>{
     return await this.productosService.getAllProductos();
   }
+  
+  @Get(':productoId')
+  async getProducto(@Param('productoId') productoId: number){
+    return await this.productosService.getProducto(productoId);
+  }
+
 
   @Get('random')
   async getRandomProductos(){

@@ -25,6 +25,27 @@ export class productosServices {
     return resultProducto;
   }
 
+  async getProducto(productoId: number): Promise<ProductoDto | null> {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOne, [productoId]);
+    
+    if (resultQuery.length === 0) {
+      return null;
+    }
+    
+    const rs: RowDataPacket = resultQuery[0];
+    const producto: ProductoDto = {
+      productoId: rs['productoId'],
+      nombre: rs['nombre'],
+      descripcion: rs['descripcion'],
+      imagenLink: rs['imagenLink'],
+      detalles: rs['detalles'],
+      precio: rs['precio'],
+      precioOferta: rs['preciooferta'],
+    };
+
+    return producto;
+  }
+
   async getRandomProductos(): Promise<ProductoDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOfert, []);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
