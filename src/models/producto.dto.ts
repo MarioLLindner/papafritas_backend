@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString } from 'class-validator';
+import { IsInt, IsOptional, IsString, isInt } from 'class-validator';
 
 class ProductoDto {
   @IsInt()
@@ -8,6 +8,10 @@ class ProductoDto {
   @IsString()
   nombre: string;
 
+  @IsOptional()
+  @IsString()
+  marca: string;
+
   @IsString()
   descripcion: string;
 
@@ -16,11 +20,13 @@ class ProductoDto {
 
   @IsString()
   detalles: string;
-  
-  @IsInt()
-  precio: number;
 
   @IsInt()
+  stock: number;
+
+  @IsInt() 
+  precio: number;
+
   @IsOptional()
   precioOferta?: number;
 }

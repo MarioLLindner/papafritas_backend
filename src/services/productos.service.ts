@@ -15,11 +15,13 @@ export class productosServices {
       return {
         productoId: rs['productoId'],
         nombre: rs['nombre'],
+        marca: rs['marca'],
         descripcion: rs['descripcion'],
         imagenLink: rs['imagenLink'],
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['preciooferta'],
+        stock: rs['stock']
       }
     });
     return resultProducto;
@@ -27,7 +29,7 @@ export class productosServices {
 
   async getProducto(productoId: number): Promise<ProductoDto | null> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOne, [productoId]);
-    
+
     if (resultQuery.length === 0) {
       return null;
     }
@@ -35,11 +37,13 @@ export class productosServices {
     const producto: ProductoDto = {
       productoId: rs['productoId'],
       nombre: rs['nombre'],
+      marca: rs['marca'],
       descripcion: rs['descripcion'],
       imagenLink: rs['imagenLink'],
       detalles: rs['detalles'],
       precio: rs['precio'],
       precioOferta: rs['preciooferta'],
+      stock: rs['stock']
     };
 
     return producto;
@@ -51,11 +55,13 @@ export class productosServices {
       return {
         productoId: rs['productoId'],
         nombre: rs['nombre'],
+        marca: rs['marca'],
         descripcion: rs['descripcion'],
         imagenLink: rs['imagenLink'],
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['precioOferta'],
+        stock: rs['stock']
       }
     });
     return resultProducto;
@@ -63,20 +69,22 @@ export class productosServices {
 
   async crearProducto(producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
-      [producto.nombre, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta]);
+      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, producto.stock]);
     return {
       nombre: producto.nombre,
+      marca: producto.marca,
       descripcion: producto.descripcion,
       imagenLink: producto.imagenLink,
       detalles: producto.detalles,
       precio: producto.precio,
-      precioOferta: producto.precioOferta
+      precioOferta: producto.precioOferta,
+      stock: producto.stock
     };
   };
 
   async actualizarProducto(productoID: number, producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.update,
-      [producto.nombre, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, productoID]);
+      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, producto.stock, productoID]);
     if (resultQuery.affectedRows == 1) {
       /* console.log('producto modificado product service back, L62',producto); */
       return producto;
@@ -113,6 +121,17 @@ export class productosServices {
     }
   }
 
+  async delToCart(productoId: number, userId: number): Promise<void> {
+    try {
+      console.log('producto | user ID');
+      console.log(`${productoId} | ${userId}`);
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delToCart, [productoId, userId]);
+      console.log(resultQuery);
+    } catch (error) {
+      throw new HttpException(`Error eliminando producto del carrito: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+  
   async getForCart(userId: number): Promise<ProductoDto[]> {
     console.log(userId)
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
@@ -120,14 +139,16 @@ export class productosServices {
       return {
         productoId: rs['productoId'],
         nombre: rs['nombre'],
+        marca: rs['marca'],
         descripcion: rs['descripcion'],
         imagenLink: rs['imagenLink'],
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['preciooferta'],
+        stock: rs['stock']
       }
     });
-    console.log('result PRODUCTO SERVICEEEEEEE BACK',resultProducto)
+    console.log('result PRODUCTO SERVICEEEEEEE BACK', resultProducto)
     return resultProducto;
   }
 
