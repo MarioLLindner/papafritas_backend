@@ -21,7 +21,9 @@ export class productosServices {
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['preciooferta'],
-        stock: rs['stock']
+        stock: rs['stock'],
+        categoria: rs['categoria'],
+        subcategoria: rs['subcategoria'],
       }
     });
     return resultProducto;
@@ -29,7 +31,6 @@ export class productosServices {
 
   async getProducto(productoId: number): Promise<ProductoDto | null> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.selectOne, [productoId]);
-
     if (resultQuery.length === 0) {
       return null;
     }
@@ -43,7 +44,9 @@ export class productosServices {
       detalles: rs['detalles'],
       precio: rs['precio'],
       precioOferta: rs['preciooferta'],
-      stock: rs['stock']
+      stock: rs['stock'],
+      categoria: rs['categoria'],
+      subcategoria: rs['subcategoria']
     };
 
     return producto;
@@ -61,7 +64,9 @@ export class productosServices {
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['precioOferta'],
-        stock: rs['stock']
+        stock: rs['stock'],
+        categoria: rs['categoria'],
+        subcategoria: rs['subcategoria']
       }
     });
     return resultProducto;
@@ -69,7 +74,8 @@ export class productosServices {
 
   async crearProducto(producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
-      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, producto.stock]);
+      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio,
+        producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
     return {
       nombre: producto.nombre,
       marca: producto.marca,
@@ -78,13 +84,16 @@ export class productosServices {
       detalles: producto.detalles,
       precio: producto.precio,
       precioOferta: producto.precioOferta,
-      stock: producto.stock
+      stock: producto.stock,
+      categoria: producto.categoria,
+      subcategoria: producto.subcategoria
     };
   };
 
   async actualizarProducto(productoID: number, producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.update,
-      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio, producto.precioOferta, producto.stock, productoID]);
+      [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles,
+        producto.precio, producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria, productoID]);
     if (resultQuery.affectedRows == 1) {
       /* console.log('producto modificado product service back, L62',producto); */
       return producto;
@@ -131,9 +140,9 @@ export class productosServices {
       throw new HttpException(`Error eliminando producto del carrito: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  
+
   async getForCart(userId: number): Promise<ProductoDto[]> {
-    console.log('id del usuario a buscar carrito. l136:',userId)
+    console.log('id del usuario a buscar carrito. l136:', userId)
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
       return {
@@ -145,7 +154,9 @@ export class productosServices {
         detalles: rs['detalles'],
         precio: rs['precio'],
         precioOferta: rs['preciooferta'],
-        stock: rs['stock']
+        stock: rs['stock'],
+        categoria: rs['categoria'],
+        subcategoria: rs['subcategoria']
       }
     });
     /* console.log('result PRODUCTO SERVICEEEEEEE BACK', resultProducto) */

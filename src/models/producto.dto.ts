@@ -29,6 +29,12 @@ class ProductoDto {
 
   @IsOptional()
   precioOferta?: number;
+
+  @IsString()
+  categoria: string;
+
+  @IsString()
+  subcategoria: string;
 }
 
 export default ProductoDto;
