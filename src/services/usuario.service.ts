@@ -10,7 +10,6 @@ export class UsuarioService {
   constructor(private dbService: DatabaseService) { }
 
   async registrarUsuario(user: UsuarioDto): Promise<UsuarioDto> {
-    //encriptar password
     const passHashFromRequest = await generateHash(user.password);
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(usuariosQueries.registrar,
       [user.email, passHashFromRequest, user.nombre, user.apellido, user.telefono, user.provincia, user.ciudad, user.codigoPostal, user.direccion, user.activo]);

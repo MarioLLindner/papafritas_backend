@@ -112,10 +112,10 @@ export class productosServices {
 
   async addToCart(productoId: number, userId: number): Promise<void | string> {
     try {
-      console.log('producto | user ID');
-      console.log(productoId + '|' + userId);
+      /* console.log('producto | user ID');
+      console.log(productoId + '|' + userId); */
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.addToCart, [productoId, userId])
-      console.log(resultQuery)
+      /* console.log(resultQuery) */
     } catch (error) {
       throw new HttpException(`error añadiendo producto al carrito' ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -123,17 +123,17 @@ export class productosServices {
 
   async delToCart(productoId: number, userId: number): Promise<void> {
     try {
-      console.log('producto | user ID');
-      console.log(`${productoId} | ${userId}`);
+      /* console.log('producto | user ID');
+      console.log(`${productoId} | ${userId}`); */
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delToCart, [productoId, userId]);
-      console.log(resultQuery);
+      /* console.log(resultQuery); */
     } catch (error) {
       throw new HttpException(`Error eliminando producto del carrito: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
   
   async getForCart(userId: number): Promise<ProductoDto[]> {
-    console.log(userId)
+    console.log('id del usuario a buscar carrito. l136:',userId)
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
       return {
@@ -148,7 +148,7 @@ export class productosServices {
         stock: rs['stock']
       }
     });
-    console.log('result PRODUCTO SERVICEEEEEEE BACK', resultProducto)
+    /* console.log('result PRODUCTO SERVICEEEEEEE BACK', resultProducto) */
     return resultProducto;
   }
 
