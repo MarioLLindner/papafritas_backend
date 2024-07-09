@@ -1,7 +1,9 @@
 import {
   Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards, Query
 } from '@nestjs/common';
+import CategoriaDto from 'src/models/categoria.dto';
 import ProductoDto from 'src/models/producto.dto';
+import SubCategoriaDto from 'src/models/subCategoria.dto';
 import { productosServices } from 'src/services/productos.service';
 
 
@@ -57,6 +59,50 @@ export class ProductosControler {
   async getForCart(@Query('userId') userId: number): Promise<ProductoDto[]> {
     return await this.productosService.getForCart(userId);
   }
+
+  @Get('categoria')
+  async getCategoria(): Promise<CategoriaDto[]> {
+    return await this.productosService.getAllCategorias();
+  }
+
+  @Post('categoria')
+  async crearCategoria(@Body() body: CategoriaDto): Promise<CategoriaDto> {
+    return await this.productosService.crearCategoria(body);
+  };
+
+  @Put('categoria')
+  async actualizarCategoria(@Body() body: CategoriaDto): Promise<CategoriaDto> {
+    return await this.productosService.actualizarCategoria(body.idCategoria, body);
+  }
+
+  @Delete('categoria')
+  async eliminarCategoria(@Body() body: { idCategoria: number }): Promise<void | string> {
+    return await this.productosService.eliminarCategoria(body.idCategoria);
+  }
+
+
+  @Get('subcategoria')
+  async getAllSubCategorias(): Promise<SubCategoriaDto[]> {
+    return await this.productosService.getAllSubCategorias();
+  }
+
+  @Post('subcategoria')
+  async crearSubCategoria(@Body() body: SubCategoriaDto): Promise<SubCategoriaDto> {
+    return await this.productosService.crearSubCategoria(body);
+  };
+
+  @Put('subcategoria')
+  async actualizarSubCategoria(@Body() body: SubCategoriaDto): Promise<SubCategoriaDto> {
+    return await this.productosService.actualizarSubCategoria(body.idSubCategoria, body);
+  }
+
+  @Delete('subcategoria')
+  async eliminarSubCategoria(@Body() body: { idSubCategoria: number }): Promise<void | string> {
+    return await this.productosService.eliminarSubCategoria(body.idSubCategoria);
+  }
+
+
+
 }
 
 

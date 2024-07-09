@@ -11,6 +11,8 @@ import { usuarioControler } from './controllers/usuario.controler';
 import { UsuarioService } from './services/usuario.service';
 import { ImagesController } from './controllers/image.controler';
 import { ImageService } from './services/image.service';
+import { ReportesControler } from './controllers/reporte.controler';
+import { ReportesServices } from './services/reportes.service';
 
 @Module({
   imports: [
@@ -19,7 +21,7 @@ import { ImageService } from './services/image.service';
     'qwerqwertyuiopásdfghjklñzxcv+-321qwertyuiopásdfghjklñzxcv+-32189qwertyuiopásdfghjklñzxcv+-32189786*786*89786*tyuiopásdfghjklñzxcv+-32189786*bnm,',
     signOptions: { expiresIn: '1h' },
   }),],
-  controllers: [AppController,LoginController,ProductosControler,usuarioControler,ImagesController],
-  providers: [AppService,loginService,DatabaseService,productosServices,UsuarioService,ImageService],
+  controllers: [AppController,LoginController,ProductosControler,usuarioControler,ImagesController,ReportesControler],
+  providers: [AppService,loginService,DatabaseService,productosServices,UsuarioService,ImageService,ReportesServices],
 })
 export class AppModule {}

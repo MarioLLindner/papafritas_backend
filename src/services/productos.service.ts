@@ -3,6 +3,8 @@ import { DatabaseService } from './db.service';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import productoQueries from './queries/productos.queries';
 import ProductoDto from 'src/models/producto.dto';
+import CategoriaDto from 'src/models/categoria.dto';
+import SubCategoriaDto from 'src/models/subCategoria.dto';
 
 @Injectable()
 
@@ -75,7 +77,7 @@ export class productosServices {
   async crearProducto(producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio,
-        producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
+      producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
     return {
       nombre: producto.nombre,
       marca: producto.marca,
@@ -93,7 +95,7 @@ export class productosServices {
   async actualizarProducto(productoID: number, producto: ProductoDto): Promise<ProductoDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.update,
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles,
-        producto.precio, producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria, productoID]);
+      producto.precio, producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria, productoID]);
     if (resultQuery.affectedRows == 1) {
       /* console.log('producto modificado product service back, L62',producto); */
       return producto;
@@ -163,5 +165,94 @@ export class productosServices {
     return resultProducto;
   }
 
+
+
+  
+  /*-----------------------------CATEGORIA----------------------------------------- */
+  async getAllCategorias(): Promise<CategoriaDto[]> {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllCategorias, [])
+    const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
+      return {
+        idCategoria: rs['idCategoria'],
+        nombreCategoria: rs['nombreCategoria']
+      }
+    });
+    return resultCategoria;
+  }
+
+  async crearCategoria(categoria: CategoriaDto): Promise<CategoriaDto> {
+    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.crearCategoria,
+      [categoria.idCategoria,categoria.nombreCategoria]);
+    return {
+      idCategoria: categoria.idCategoria,
+      nombreCategoria: categoria.nombreCategoria
+    };
+  }
+
+  async actualizarCategoria(idCategoria: number, categoria: CategoriaDto): Promise<CategoriaDto> {
+    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.updateCategoria,
+      [categoria.nombreCategoria, idCategoria]);
+    if (resultQuery.affectedRows == 1) {
+      return categoria;
+    }
+    throw new HttpException("No se pudo actualizar la categoria ya que no se encontro el Id", HttpStatus.NOT_FOUND)
+  };
+
+  async eliminarCategoria(idCategoria: number): Promise<void | string> {
+    try {
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.deleteCategoria, [idCategoria]);
+      if (resultQuery.affectedRows == 0) {
+        throw new HttpException("No se pudo eliminar la categoria por que no existe dicho Id", HttpStatus.NOT_FOUND)
+      } else { return ('Categoria eliminado con exito'); }
+    } catch (error) {
+      throw new HttpException(`Error eliminando la categoria: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  };
+
+
+
+  /*----------------------SUB-CATEGORIA----------------------------------------- */
+  async getAllSubCategorias(): Promise<SubCategoriaDto[]> {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllSubCategorias, [])
+    console.log('resultaso:',resultQuery)
+    const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
+      return {
+        idCategoria: rs['idCategoria'],
+        idSubCategoria: rs['idSubCategoria'],
+        nombreSubCategoria: rs['nombreSubCategoria']
+      }
+    });
+    return resultCategoria;
+  }
+
+  async crearSubCategoria(categoria: SubCategoriaDto): Promise<SubCategoriaDto> {
+    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.crearSubCategoria,
+      [categoria.idCategoria, categoria.idSubCategoria, categoria.nombreSubCategoria]);
+    return {
+      idCategoria: categoria.idCategoria,
+      idSubCategoria: categoria.idSubCategoria,
+      nombreSubCategoria: categoria.nombreSubCategoria
+    };
+  }
+
+  async actualizarSubCategoria(idCategoria: number, categoria: SubCategoriaDto): Promise<SubCategoriaDto> {
+    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.updateSubCategoria,
+      [categoria.idSubCategoria, categoria.nombreSubCategoria, categoria.idCategoria]);
+    if (resultQuery.affectedRows == 1) {
+      return categoria;
+    }
+    throw new HttpException("No se pudo actualizar la categoria ya que no se encontro el Id", HttpStatus.NOT_FOUND)
+  };
+
+  async eliminarSubCategoria(idCategoria: number): Promise<void | string> {
+    try {
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.deleteSubCategoria, [idCategoria]);
+      if (resultQuery.affectedRows == 0) {
+        throw new HttpException("No se pudo eliminar la categoria por que no existe dicho Id", HttpStatus.NOT_FOUND)
+      } else { return ('Categoria eliminado con exito'); }
+    } catch (error) {
+      throw new HttpException(`Error eliminando la categoria: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  };
 
 }
