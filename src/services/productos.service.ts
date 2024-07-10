@@ -114,7 +114,6 @@ export class productosServices {
     } catch (error) {
       console.log(error)
       if (error.errnumero == 1451) {
-        // Error 409 conflicto entre lo que se quiere eliminar y lo que hay en la base de datos
         throw new HttpException('No se pudo eliminar el producto ya que esta referenciado por otro registro', HttpStatus.CONFLICT);
       }
       throw new HttpException(`Error eliminando el producto: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -123,10 +122,7 @@ export class productosServices {
 
   async addToCart(productoId: number, userId: number): Promise<void | string> {
     try {
-      /* console.log('producto | user ID');
-      console.log(productoId + '|' + userId); */
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.addToCart, [productoId, userId])
-      /* console.log(resultQuery) */
     } catch (error) {
       throw new HttpException(`error añadiendo producto al carrito' ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -134,10 +130,7 @@ export class productosServices {
 
   async delToCart(productoId: number, userId: number): Promise<void> {
     try {
-      /* console.log('producto | user ID');
-      console.log(`${productoId} | ${userId}`); */
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delToCart, [productoId, userId]);
-      /* console.log(resultQuery); */
     } catch (error) {
       throw new HttpException(`Error eliminando producto del carrito: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -161,7 +154,6 @@ export class productosServices {
         subcategoria: rs['subcategoria']
       }
     });
-    /* console.log('result PRODUCTO SERVICEEEEEEE BACK', resultProducto) */
     return resultProducto;
   }
 
@@ -214,7 +206,18 @@ export class productosServices {
   /*----------------------SUB-CATEGORIA----------------------------------------- */
   async getAllSubCategorias(): Promise<SubCategoriaDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllSubCategorias, [])
-    console.log('resultaso:',resultQuery)
+    const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
+      return {
+        idCategoria: rs['idCategoria'],
+        idSubCategoria: rs['idSubCategoria'],
+        nombreSubCategoria: rs['nombreSubCategoria']
+      }
+    });
+    return resultCategoria;
+  }
+
+  async getAllSubCategoriasByIDcategoria(idCategoria:number): Promise<SubCategoriaDto[]> {
+    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllSubCategoriasByIDcategoria, [idCategoria])
     const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
       return {
         idCategoria: rs['idCategoria'],
@@ -227,10 +230,9 @@ export class productosServices {
 
   async crearSubCategoria(categoria: SubCategoriaDto): Promise<SubCategoriaDto> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.crearSubCategoria,
-      [categoria.idCategoria, categoria.idSubCategoria, categoria.nombreSubCategoria]);
+      [categoria.idCategoria, categoria.nombreSubCategoria]);
     return {
       idCategoria: categoria.idCategoria,
-      idSubCategoria: categoria.idSubCategoria,
       nombreSubCategoria: categoria.nombreSubCategoria
     };
   }

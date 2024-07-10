@@ -81,9 +81,15 @@ export class ProductosControler {
   }
 
 
-  @Get('subcategoria')
+  @Get('subcategorias')
   async getAllSubCategorias(): Promise<SubCategoriaDto[]> {
     return await this.productosService.getAllSubCategorias();
+  }
+  
+  @Get('subcategoria')
+  async getAllSubCategoriasByIDcategoria(@Query('idCategoria') idCategoria: number ): Promise<SubCategoriaDto[]> {
+  
+    return await this.productosService.getAllSubCategoriasByIDcategoria(idCategoria);
   }
 
   @Post('subcategoria')

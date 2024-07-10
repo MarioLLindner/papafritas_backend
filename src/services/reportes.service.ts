@@ -48,7 +48,7 @@ export class ReportesServices {
     }
   }
 
-  async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
+  async getReporteCompra(idReporte: number): Promise<any> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]);
     const resultReporte = resultQuery.map((rs: RowDataPacket) => {
       return {
