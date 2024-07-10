@@ -78,6 +78,7 @@ export class productosServices {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio,
       producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
+      console.log('PRODUCTO BACKKK:',resultQuery)
     return {
       nombre: producto.nombre,
       marca: producto.marca,

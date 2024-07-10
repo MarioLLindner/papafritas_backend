@@ -65,6 +65,9 @@ export class ProductosControler {
     return await this.productosService.getAllCategorias();
   }
 
+
+
+  
   @Post('categoria')
   async crearCategoria(@Body() body: CategoriaDto): Promise<CategoriaDto> {
     return await this.productosService.crearCategoria(body);

@@ -48,17 +48,18 @@ export class ReportesServices {
     }
   }
 
-  async getReporteCompra(idReporte: number): Promise<any> {
+    async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]);
     const resultReporte = resultQuery.map((rs: RowDataPacket) => {
       return {
-        idcompra: rs['idcompra'],
+        idCompra: rs['idcompra'],
         idReporte: rs['idReporte'],
         idProducto: rs['idProducto'],
         cantidad: rs['cantidad'],
-        precio: rs['precioUnitario'],
-      }
-    })
+        precioUnitario: rs['precio']
+      };
+    });
+    return resultReporte;
   }
 
 
