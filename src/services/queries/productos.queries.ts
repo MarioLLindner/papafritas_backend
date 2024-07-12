@@ -21,12 +21,14 @@ const productoQueries = {
         updateCategoria: 'update categorias set nombreCategoria = ? where idCategoria = ?',
         deleteCategoria: 'call eliminarCategoria(?)',
 
+        getNombreCategoriabyId:'select nombreCategoria from categorias where idCategoria = ?',
+
+
         getAllSubCategorias: 'select * from subCategorias ',
         getAllSubCategoriasByIDcategoria: 'select idSubCategoria, nombreSubCategoria from subCategorias where idCategoria = ?',
         crearSubCategoria: 'insert into subCategorias (idCategoria, nombreSubCategoria) values ( ?, ?)',
         updateSubCategoria: 'update subCategorias set idCategoria = ?, nombreSubCategoria = ? where idSubCategoria = ?',
         deleteSubCategoria: 'delete from SubCategorias where idSubCategoria = ?',
-
 
 
 

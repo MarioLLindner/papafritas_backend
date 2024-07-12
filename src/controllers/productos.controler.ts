@@ -88,6 +88,26 @@ export class ProductosControler {
     return await this.productosService.eliminarCategoria(body.idCategoria);
   }
 
+/*   @Get('catName')
+  async getNombreCatbyId(@Body() body: { idCategoria: number }): Promise<string|void> {
+    console.log('el body del back:',body)
+    const nombreCategoria = await this.productosService.getNombreCatbyId(body.idCategoria);
+    console.log('NOMBRE CATEGORIA CONTROLER BACKEND:',nombreCategoria)
+    return nombreCategoria
+  } */
+
+  @Get('catName')
+  async getNombreCatbyId(@Query('idCategoria') idCategoria: number ): Promise<string|void> {
+    console.log('el body del back:',idCategoria)
+    if(idCategoria == undefined || idCategoria == null){
+      return null
+    }else{
+      const nombreCategoria = await this.productosService.getNombreCatbyId(idCategoria);
+      console.log('nombreCategoria;:',nombreCategoria)
+      return await this.productosService.getNombreCatbyId(idCategoria);
+    }
+  }
+
 
   @Get('subcategorias')
   async getAllSubCategorias(): Promise<SubCategoriaDto[]> {

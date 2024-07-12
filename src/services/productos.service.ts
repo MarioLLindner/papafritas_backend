@@ -211,6 +211,23 @@ export class productosServices {
     }
   };
 
+  
+
+  async getNombreCatbyId(idCategoria: number): Promise<string> {
+    try {
+      const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getNombreCategoriabyId, [idCategoria])
+      const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
+        return {
+          idCategoria: rs['idCategoria'],
+          nombreCategoria: rs['nombreCategoria']
+        }
+      });
+      return resultCategoria[0].nombreCategoria;
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
 
   /*----------------------SUB-CATEGORIA----------------------------------------- */
@@ -266,5 +283,6 @@ export class productosServices {
       throw new HttpException(`Error eliminando la categoria: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   };
+
 
 }
