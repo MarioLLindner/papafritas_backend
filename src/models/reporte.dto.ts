@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDate, isInt, IsInt, IsOptional, IsString } from 'class-validator';
 
 class ReporteDto {
@@ -11,6 +12,7 @@ class ReporteDto {
   idUsuario:number;
 
   @IsDate()
+  @Type(() => Date)
   fechaReporte:Date;
 
   @IsInt()

@@ -78,7 +78,7 @@ export class productosServices {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio,
       producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
-      console.log('PRODUCTO BACKKK:',resultQuery)
+/*       console.log('PRODUCTO BACKKK:',resultQuery) */
     return {
       nombre: producto.nombre,
       marca: producto.marca,
@@ -138,7 +138,7 @@ export class productosServices {
   }
 
   async getForCart(userId: number): Promise<ProductoDto[]> {
-    console.log('id del usuario a buscar carrito. l136:', userId)
+    /* console.log('id del usuario a buscar carrito. l136:', userId) */
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
       return {

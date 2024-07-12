@@ -1,10 +1,10 @@
 const reportesQueries = {
   getAllReportes:'',
-  crearReporte:'',
+  crearReporte:'insert into reportes (idReporte,idUsuario,fechaReporte,montoGastado) values (?, ?, ?, ?)',
+  reportesCount:'SELECT COUNT(*) as count FROM Reportes',
 
 
-
-  añadirCompras:'',
+  añadirCompras:'insert into comprasRealizadas (idcompra,idReporte,idProducto,cantidad,precioUnitario) values (?, ?, ?, ?, ?)',
   
   getComprasByReporte:'',
 

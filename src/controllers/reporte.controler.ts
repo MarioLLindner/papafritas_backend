@@ -6,7 +6,7 @@ import ReporteCompraDto from 'src/models/reporteCompra.dto';
 import { ReportesServices } from 'src/services/reportes.service';
 
 
-@Controller('/api/reportes')
+@Controller('/api/reporte')
 
 export class ReportesControler {
   constructor(private readonly ReportesServices: ReportesServices) { }
@@ -18,15 +18,22 @@ export class ReportesControler {
 
   @Post()
   async crearReporte(@Body() body: ReporteDto): Promise<ReporteDto> {
+    console.log('BODY REPORTE', body)
     return await this.ReportesServices.crearReporte(body);
   }
 
-  @Post()
-  async añadirReporteCompra(@Body() body: ReporteCompraDto): Promise<ReporteCompraDto> {
-    return await this.ReportesServices.añadirReporteCompra(body);
+  @Get('count')
+  async countReportes(): Promise<number> {
+    return await this.ReportesServices.countReportes()
   }
 
-  @Get()
+  @Post('compra')
+  async añadirReporteCompra(@Body() body: ReporteCompraDto[]): Promise<ReporteCompraDto[]> {
+    console.log('BODY REPORTE ReporteCompraDto:', body)
+    return await this.ReportesServices.postReporteCompra(body);
+  }
+
+  @Get('compra')
   async getReporteCompra(@Query('idReporte') idReporte: number): Promise<ReporteCompraDto[]> {
     return await this.ReportesServices.getReporteCompra(idReporte);
   }

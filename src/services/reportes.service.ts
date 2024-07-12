@@ -25,6 +25,7 @@ export class ReportesServices {
   }
 
   async crearReporte(reporte: ReporteDto): Promise<ReporteDto> {
+    console.log('REPORTE QUE LLEGA DESDE FRONT', reporte)
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.crearReporte,
       [reporte.idReporte, reporte.idUsuario, reporte.fechaReporte, reporte.montoGastado]);
     return {
@@ -35,20 +36,30 @@ export class ReportesServices {
     }
   }
 
-  async añadirReporteCompra(reporteCompra: ReporteCompraDto): Promise<ReporteCompraDto> {
-    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.añadirCompras, [
-      reporteCompra.idCompra, reporteCompra.idReporte, 
-      reporteCompra.idProducto, reporteCompra.cantidad, reporteCompra.precioUnitario]);
-    return {
-      idCompra: reporteCompra.idCompra,
-      idReporte: reporteCompra.idReporte,
-      idProducto: reporteCompra.idProducto,
-      cantidad: reporteCompra.cantidad,
-      precioUnitario: reporteCompra.precioUnitario
+  
+  async postReporteCompra(reporteCompra: ReporteCompraDto[]): Promise<ReporteCompraDto[]> {
+    console.log('REPORTE COMPRA QUE LLEGA DESDE FRONT', reporteCompra);
+    const results: ReporteCompraDto[] = [];
+    for (const compra of reporteCompra) {
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.añadirCompras, [
+        compra.idCompra, compra.idReporte, compra.idProducto, compra.cantidad, compra.precioUnitario
+      ]);
+      const compraInsertada: ReporteCompraDto = {
+        idCompra: compra.idCompra,
+        idReporte: compra.idReporte,
+        idProducto: compra.idProducto,
+        cantidad: compra.cantidad,
+        precioUnitario: compra.precioUnitario
+      };
+      results.push(compraInsertada);
     }
+    return results;
   }
 
-    async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
+
+
+
+  async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]);
     const resultReporte = resultQuery.map((rs: RowDataPacket) => {
       return {
@@ -63,9 +74,16 @@ export class ReportesServices {
   }
 
 
-
-
-
-
-
+  async countReportes(): Promise<number> {
+    const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.reportesCount, [])
+    return resultQuery[0].count;
+  }
 }
+
+
+
+
+
+
+
+
