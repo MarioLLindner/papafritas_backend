@@ -34,8 +34,8 @@ export class ReportesControler {
   }
 
   @Get('compra')
-  async getReporteCompra(@Query('idReporte') idReporte: number): Promise<ReporteCompraDto[]> {
-    return await this.ReportesServices.getReporteCompra(idReporte);
+  async getReporteCompra(@Body() body: { idReporte: number } ): Promise<ReporteCompraDto[]> {
+    return await this.ReportesServices.getReporteCompra(body.idReporte);
   }
 
 
