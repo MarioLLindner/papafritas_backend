@@ -137,6 +137,15 @@ export class productosServices {
     }
   }
 
+  async deleteCart(userId: number): Promise<void> {
+    try {
+      const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.deleteCart, [userId]);
+    } catch (error) {
+      throw new HttpException(`Error eliminando producto del carrito: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
   async getForCart(userId: number): Promise<ProductoDto[]> {
     /* console.log('id del usuario a buscar carrito. l136:', userId) */
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);

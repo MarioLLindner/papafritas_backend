@@ -55,6 +55,11 @@ export class ProductosControler {
     await this.productosService.delToCart(body.productoId, body.userId);
   }
 
+  @Delete('deleteCart')
+  async deleteCart(@Body() body: {userId: number }): Promise<void> {
+    await this.productosService.deleteCart(body.userId);
+  }
+
   @Get('carrito')
   async getForCart(@Query('userId') userId: number): Promise<ProductoDto[]> {
     return await this.productosService.getForCart(userId);

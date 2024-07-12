@@ -13,7 +13,7 @@ const productoQueries = {
         delToCart: 'delete from carritoDeCompras where codigoProducto = ? and userId = ?',
         getForCart: `select productoId, nombre, marca, descripcion, imagenLink, detalles, precio, preciooferta, stock, categoria, subcategoria 
               from carritoDeCompras c join productos p on c.codigoProducto = p.productoId  where c.userId = ?`,
-
+        deleteCart:'delete from carritoDeCompras where userId = ?',
         selectOne: `select productoId, nombre, marca, descripcion, imagenLink, detalles, precio, preciooferta, stock, categoria, subcategoria from productos where productoId = ?;`,
 
         getAllCategorias: 'select idCategoria, nombreCategoria from categorias',
