@@ -16,7 +16,7 @@ class ReporteCompraDto {
   @IsInt()
   cantidad:number;
 
-  @IsInt()
+  @IsOptional()
   precioUnitario:number;
 }
 export default ReporteCompraDto;

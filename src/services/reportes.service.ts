@@ -4,6 +4,7 @@ import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import ReporteDto from 'src/models/reporte.dto';
 import reportesQueries from './queries/reportes.queries';
 import ReporteCompraDto from 'src/models/reporteCompra.dto';
+import { Console } from 'console';
 
 @Injectable()
 
@@ -60,16 +61,18 @@ export class ReportesServices {
 
 
   async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
-    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]);
+    const resultQuery = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]) as RowDataPacket[];
+    console.log('return resultQuery:', resultQuery); 
     const resultReporte = resultQuery.map((rs: RowDataPacket) => {
       return {
         idCompra: rs['idcompra'],
         idReporte: rs['idReporte'],
         idProducto: rs['idProducto'],
         cantidad: rs['cantidad'],
-        precioUnitario: rs['precio']
+        precioUnitario: rs['precioUnitario']
       };
     });
+    console.log('return resultReporte:', resultReporte); 
     return resultReporte;
   }
 

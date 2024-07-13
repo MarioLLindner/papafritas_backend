@@ -6,7 +6,7 @@ const reportesQueries = {
 
   añadirCompras:'insert into comprasRealizadas (idcompra,idReporte,idProducto,cantidad,precioUnitario) values (?, ?, ?, ?, ?)',
   
-  getComprasByReporte:'select * from comprasRealizadas where idReporte = ?',
+  getComprasByReporte:'select idcompra,idReporte,idProducto,cantidad,precioUnitario from comprasRealizadas where idReporte = ?',
 
 }
 export default reportesQueries;

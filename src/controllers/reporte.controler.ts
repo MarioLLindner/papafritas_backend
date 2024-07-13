@@ -33,10 +33,19 @@ export class ReportesControler {
     return await this.ReportesServices.postReporteCompra(body);
   }
 
-  @Get('compra')
-  async getReporteCompra(@Body() body: { idReporte: number } ): Promise<ReporteCompraDto[]> {
-    return await this.ReportesServices.getReporteCompra(body.idReporte);
+  @Post('compras')
+  async getReporteCompra(@Body() body: { idReporte: number }): Promise<ReporteCompraDto[]> {
+    console.log('BODY REPORTE ReporteCompraDto :', body);
+    const rta = await this.ReportesServices.getReporteCompra(body.idReporte);
+    console.log('RESPUESTA:', rta);
+    return rta;
   }
+
+  /* @Get('compra')
+  async getReporteCompra(@Query('idReporte') idReporte: number  ): Promise<ReporteCompraDto[]> {
+    console.log('QUERY REPORTE idReporte:', idReporte)
+    return await this.ReportesServices.getReporteCompra(idReporte);
+  } */
 
 
 
