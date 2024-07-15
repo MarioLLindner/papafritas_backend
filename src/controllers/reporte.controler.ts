@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards, Query
+  Body, Controller, Get, Post
 } from '@nestjs/common';
 import ReporteDto from 'src/models/reporte.dto';
 import ReporteCompraDto from 'src/models/reporteCompra.dto';
@@ -40,14 +40,6 @@ export class ReportesControler {
     console.log('RESPUESTA:', rta);
     return rta;
   }
-
-  /* @Get('compra')
-  async getReporteCompra(@Query('idReporte') idReporte: number  ): Promise<ReporteCompraDto[]> {
-    console.log('QUERY REPORTE idReporte:', idReporte)
-    return await this.ReportesServices.getReporteCompra(idReporte);
-  } */
-
-
 
 
 }

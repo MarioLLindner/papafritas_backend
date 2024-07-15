@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { DatabaseService } from './db.service';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import ReporteDto from 'src/models/reporte.dto';
 import reportesQueries from './queries/reportes.queries';
 import ReporteCompraDto from 'src/models/reporteCompra.dto';
-import { Console } from 'console';
+
 
 @Injectable()
 
@@ -18,7 +18,7 @@ export class ReportesServices {
       return {
         idReporte: rs['idReporte'],
         idUsuario: rs['idUsuario'],
-        fechaReporte: rs['fechaReporte'],//ver este 
+        fechaReporte: rs['fechaReporte'],
         montoGastado: rs['montoGastado']
       }
     });
@@ -32,7 +32,7 @@ export class ReportesServices {
     return {
       idReporte: reporte.idReporte,
       idUsuario: reporte.idUsuario,
-      fechaReporte: reporte.fechaReporte,//ver este 
+      fechaReporte: reporte.fechaReporte,
       montoGastado: reporte.montoGastado
     }
   }
@@ -57,9 +57,6 @@ export class ReportesServices {
     return results;
   }
 
-
-
-
   async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
     const resultQuery = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]) as RowDataPacket[];
     console.log('return resultQuery:', resultQuery); 
@@ -75,7 +72,6 @@ export class ReportesServices {
     console.log('return resultReporte:', resultReporte); 
     return resultReporte;
   }
-
 
   async countReportes(): Promise<number> {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.reportesCount, [])

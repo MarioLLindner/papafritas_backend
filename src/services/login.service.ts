@@ -16,10 +16,8 @@ export class loginService {
     try {
       const passHashFromRequest = await generateHash(uPassword);
       const userResult = await this.getUser(uEmail, passHashFromRequest);
-        /* console.log('passHashFromRequest', passHashFromRequest) */
         if (userResult.email === uEmail && userResult.password === passHashFromRequest) {
             return {
-                /*informacion que manda el token al front */
                 userId: userResult.userId,
                 nombre: userResult.nombre,
                 admin: userResult.admin

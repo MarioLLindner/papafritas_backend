@@ -18,7 +18,6 @@ export class DatabaseService {
       password: 'root',
       host: 'localhost',
       user: 'root',
-      // cantidad maxima de conexiones en el pool
       connectionLimit: 10,
     });
   }

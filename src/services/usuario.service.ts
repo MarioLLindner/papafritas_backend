@@ -67,7 +67,6 @@ export class UsuarioService {
     } catch (error) {
       console.log(error)
       if (error.errnumero == 1451) {
-        // Error 409 conflicto entre lo que se quiere eliminar y lo que hay en la base de datos
         throw new HttpException('No se pudo eliminar el usuario ya que esta referenciado por otro registro', HttpStatus.CONFLICT);
       }
       throw new HttpException(`Error eliminando el usuario: ${error.sqlMessage}`, HttpStatus.INTERNAL_SERVER_ERROR);

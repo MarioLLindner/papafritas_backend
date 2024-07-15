@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Delete, Get, HttpStatus, Param, ParseIntPipe, Patch, Post, Put, Res, UseGuards, Query
+  Body, Controller, Delete, Get, Param, Post, Put, Query
 } from '@nestjs/common';
 import CategoriaDto from 'src/models/categoria.dto';
 import ProductoDto from 'src/models/producto.dto';
@@ -23,12 +23,10 @@ export class ProductosControler {
     return await this.productosService.getProducto(productoId);
   }
 
-
   @Get('random')
   async getRandomProductos() {
     return this.productosService.getRandomProductos();
   }
-
 
   @Post()
   async crearProducto(@Body() body: ProductoDto): Promise<ProductoDto> {
@@ -70,9 +68,6 @@ export class ProductosControler {
     return await this.productosService.getAllCategorias();
   }
 
-
-
-  
   @Post('categoria')
   async crearCategoria(@Body() body: CategoriaDto): Promise<CategoriaDto> {
     return await this.productosService.crearCategoria(body);
@@ -87,14 +82,6 @@ export class ProductosControler {
   async eliminarCategoria(@Body() body: { idCategoria: number }): Promise<void | string> {
     return await this.productosService.eliminarCategoria(body.idCategoria);
   }
-
-/*   @Get('catName')
-  async getNombreCatbyId(@Body() body: { idCategoria: number }): Promise<string|void> {
-    console.log('el body del back:',body)
-    const nombreCategoria = await this.productosService.getNombreCatbyId(body.idCategoria);
-    console.log('NOMBRE CATEGORIA CONTROLER BACKEND:',nombreCategoria)
-    return nombreCategoria
-  } */
 
   @Get('catName')
   async getNombreCatbyId(@Query('idCategoria') idCategoria: number ): Promise<string|void> {

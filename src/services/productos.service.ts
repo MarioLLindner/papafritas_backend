@@ -78,7 +78,6 @@ export class productosServices {
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.insert,
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles, producto.precio,
       producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria]);
-/*       console.log('PRODUCTO BACKKK:',resultQuery) */
     return {
       nombre: producto.nombre,
       marca: producto.marca,
@@ -98,14 +97,12 @@ export class productosServices {
       [producto.nombre, producto.marca, producto.descripcion, producto.imagenLink, producto.detalles,
       producto.precio, producto.precioOferta, producto.stock, producto.categoria, producto.subcategoria, productoID]);
     if (resultQuery.affectedRows == 1) {
-      /* console.log('producto modificado product service back, L62',producto); */
       return producto;
     }
     throw new HttpException("No se pudo actualizar el producto ya que no se encontro el Id", HttpStatus.NOT_FOUND)
   };
 
 
-  /* ELIMINADO ES CASCADA, CUANDO UN USUARIO LO TIENE EN CARRITO DE COMPRAS */
   async eliminarProducto(productoId: number): Promise<void | string> {
     try {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(productoQueries.delete, [productoId]);
@@ -147,7 +144,6 @@ export class productosServices {
 
 
   async getForCart(userId: number): Promise<ProductoDto[]> {
-    /* console.log('id del usuario a buscar carrito. l136:', userId) */
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getForCart, [userId]);
     const resultProducto = resultQuery.map((rs: RowDataPacket) => {
       return {
@@ -167,10 +163,6 @@ export class productosServices {
     return resultProducto;
   }
 
-
-
-  
-  /*-----------------------------CATEGORIA----------------------------------------- */
   async getAllCategorias(): Promise<CategoriaDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllCategorias, [])
     const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
@@ -230,7 +222,6 @@ export class productosServices {
   }
 
 
-  /*----------------------SUB-CATEGORIA----------------------------------------- */
   async getAllSubCategorias(): Promise<SubCategoriaDto[]> {
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(productoQueries.getAllSubCategorias, [])
     const resultCategoria = resultQuery.map((rs: RowDataPacket) => {
