@@ -29,15 +29,12 @@ export class ReportesControler {
 
   @Post('compra')
   async añadirReporteCompra(@Body() body: ReporteCompraDto[]): Promise<ReporteCompraDto[]> {
-    console.log('BODY REPORTE ReporteCompraDto:', body)
     return await this.ReportesServices.postReporteCompra(body);
   }
 
   @Post('compras')
   async getReporteCompra(@Body() body: { idReporte: number }): Promise<ReporteCompraDto[]> {
-    console.log('BODY REPORTE ReporteCompraDto :', body);
     const rta = await this.ReportesServices.getReporteCompra(body.idReporte);
-    console.log('RESPUESTA:', rta);
     return rta;
   }
 

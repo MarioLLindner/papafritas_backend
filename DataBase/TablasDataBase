@@ -1,0 +1,116 @@
+CREATE TABLE USUARIO (
+    userId INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(200) NOT NULL,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    telefono VARCHAR(20) NOT NULL,
+    provincia VARCHAR(200) NOT NULL,
+    ciudad VARCHAR(200) NOT NULL,
+    codigoPostal VARCHAR(30) NOT NULL,
+    direccion VARCHAR(200) NOT NULL,
+    admin BOOLEAN DEFAULT false,
+    activo BOOLEAN DEFAULT true,
+    PRIMARY KEY (userId)
+);
+
+CREATE TABLE PRODUCTOS (
+    productoId INT NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(200) NOT NULL,
+    marca VARCHAR(200),
+    descripcion VARCHAR(5000),
+    imagenLink VARCHAR(1000),
+    detalles VARCHAR(5000),
+    precio INT NOT NULL,
+    precioOferta DOUBLE,
+    stock INT NOT NULL DEFAULT 0,
+    categoria VARCHAR(200),
+    subCategoria VARCHAR(200),
+    PRIMARY KEY (productoId)
+);
+
+CREATE TABLE Categorias (
+    idCategoria INT NOT NULL AUTO_INCREMENT,
+    nombreCategoria VARCHAR(200),
+    PRIMARY KEY (idCategoria)
+);
+
+CREATE TABLE SubCategorias (
+    idSubCategoria INT NOT NULL AUTO_INCREMENT,
+    idCategoria INT NOT NULL,
+    nombreSubCategoria VARCHAR(200),
+    PRIMARY KEY (idSubCategoria),
+    FOREIGN KEY (idCategoria) REFERENCES Categorias(idCategoria)
+);
+
+CREATE TABLE CarritoDeCompras (
+    carritoId INT NOT NULL AUTO_INCREMENT,
+    userId INT NOT NULL,
+    codigoProducto INT NOT NULL,
+    cantidad INT NOT NULL DEFAULT 1,
+    PRIMARY KEY (carritoId),
+    FOREIGN KEY (userId) REFERENCES USUARIO(userId),
+    FOREIGN KEY (codigoProducto) REFERENCES PRODUCTOS(productoId)
+);
+
+CREATE TABLE Reportes (
+    idReporte INT NOT NULL AUTO_INCREMENT,
+    idUsuario INT NOT NULL,
+    fechaReporte DATE,
+    montoGastado DOUBLE,
+    PRIMARY KEY (idReporte)
+);
+
+CREATE TABLE comprasRealizadas (
+    idcompra INT NOT NULL AUTO_INCREMENT,
+    idReporte INT NOT NULL,
+    idProducto VARCHAR(255) NOT NULL,
+    cantidad INT NOT NULL DEFAULT 1,
+    precioUnitario DOUBLE NOT NULL,
+    PRIMARY KEY (idcompra),
+    FOREIGN KEY (idReporte) REFERENCES Reportes(idReporte)
+);
+
+
+CREATE PROCEDURE eliminarProducto(IN idProducto INT)
+BEGIN
+    DELETE FROM CarritoDeCompras WHERE codigoProducto = idProducto;
+    DELETE FROM PRODUCTOS WHERE productoId = idProducto;
+END //
+
+CREATE PROCEDURE eliminarCategoria(IN idCat INT)
+BEGIN
+    DELETE FROM SubCategorias WHERE idCategoria = idCat;
+    DELETE FROM Categorias WHERE idCategoria = idCat;
+END //
+
+
+
+
+
+CALL eliminarProducto(1);
+CALL eliminarCategoria(1);
+
+SELECT * FROM USUARIO;
+SELECT * FROM PRODUCTOS;
+SELECT * FROM Categorias;
+SELECT * FROM SubCategorias;
+SELECT * FROM CarritoDeCompras;
+SELECT * FROM Reportes;
+SELECT * FROM comprasRealizadas;
+
+TRUNCATE TABLE productos;
+truncate table carritodecompras;
+TRUNCATE TABLE Categorias;
+TRUNCATE TABLE SubCategorias;
+TRUNCATE TABLE Reportes;
+TRUNCATE TABLE comprasRealizadas;
+
+
+DROP TABLE USUARIO;
+DROP TABLE PRODUCTOS;
+DROP TABLE Categorias;
+DROP TABLE SubCategorias;
+DROP TABLE CarritoDeCompras;
+DROP TABLE Reportes;
+DROP TABLE comprasRealizadas;

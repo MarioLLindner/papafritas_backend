@@ -26,7 +26,6 @@ export class ReportesServices {
   }
 
   async crearReporte(reporte: ReporteDto): Promise<ReporteDto> {
-    console.log('REPORTE QUE LLEGA DESDE FRONT', reporte)
     const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.crearReporte,
       [reporte.idReporte, reporte.idUsuario, reporte.fechaReporte, reporte.montoGastado]);
     return {
@@ -39,7 +38,6 @@ export class ReportesServices {
 
   
   async postReporteCompra(reporteCompra: ReporteCompraDto[]): Promise<ReporteCompraDto[]> {
-    console.log('REPORTE COMPRA QUE LLEGA DESDE FRONT', reporteCompra);
     const results: ReporteCompraDto[] = [];
     for (const compra of reporteCompra) {
       const resultQuery: ResultSetHeader = await this.dbService.executeQuery(reportesQueries.añadirCompras, [
@@ -59,7 +57,6 @@ export class ReportesServices {
 
   async getReporteCompra(idReporte: number): Promise<ReporteCompraDto[]> {
     const resultQuery = await this.dbService.executeSelect(reportesQueries.getComprasByReporte, [idReporte]) as RowDataPacket[];
-    console.log('return resultQuery:', resultQuery); 
     const resultReporte = resultQuery.map((rs: RowDataPacket) => {
       return {
         idCompra: rs['idcompra'],
@@ -69,7 +66,6 @@ export class ReportesServices {
         precioUnitario: rs['precioUnitario']
       };
     });
-    console.log('return resultReporte:', resultReporte); 
     return resultReporte;
   }
 

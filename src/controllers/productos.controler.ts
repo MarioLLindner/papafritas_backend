@@ -85,12 +85,10 @@ export class ProductosControler {
 
   @Get('catName')
   async getNombreCatbyId(@Query('idCategoria') idCategoria: number ): Promise<string|void> {
-    console.log('el body del back:',idCategoria)
     if(idCategoria == undefined || idCategoria == null){
       return null
     }else{
       const nombreCategoria = await this.productosService.getNombreCatbyId(idCategoria);
-      console.log('nombreCategoria;:',nombreCategoria)
       return await this.productosService.getNombreCatbyId(idCategoria);
     }
   }
